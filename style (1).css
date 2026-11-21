@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#101923">
+  <title>AKFA | Premium Buyurtma</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar"><a class="brand" href="#"><span class="brand-mark">A</span><span>AKFA<span class="brand-sub"> PREMIUM SYSTEMS</span></span></a>
+<nav><a href="#products">Mahsulotlar</a><a href="#about">Biz haqimizda</a><a href="#order">Buyurtma</a></nav>
+<div class="top-actions"><button class="btn btn-outline" id="trackOpen">Buyurtmani kuzatish</button><a class="btn btn-primary" href="#order">Buyurtma berish <span>↗</span></a></div>
+<button class="mobile-menu" id="mobileMenu">☰</button></header>
+<main>
+<section class="hero"><div class="hero-content"><div class="eyebrow"><span></span> ZAMONAVIY ARXITEKTURA UCHUN</div><h1>Har bir detalda<br><em>mukammallik.</em></h1><p>Uy va biznesingiz uchun sifatli AKFA rom, eshik va fasad yechimlari. O‘zingizga mos modelni tanlang, rangini belgilang va buyurtma qoldiring.</p><div class="hero-buttons"><a class="btn btn-primary btn-large" href="#products">Katalogni ko‘rish <span>↗</span></a><a class="text-link" href="#about">Biz haqimizda <span>→</span></a></div><div class="hero-stats"><div><b>35+</b><small>Mahsulot turi</small></div><div><b>5</b><small>Rang varianti</small></div><div><b>12</b><small>Viloyat bo‘ylab</small></div></div></div>
+<div class="hero-visual"><div class="hero-photo"></div><div class="floating-card"><span class="live-dot"></span><div><b>Premium sifat</b><small>Har bir loyiha uchun</small></div><strong>01</strong></div><div class="vertical-label">AKFA • DESIGN • QUALITY</div></div></section>
+<section class="section catalog" id="products"><div class="section-head"><div><div class="eyebrow">BIZNING KATALOG</div><h2>O‘zingizga mos <em>yechimni</em> tanlang</h2></div><p>35 xil mahsulotdan birini tanlang. Har bir model uchun 5 xil rang mavjud.</p></div><div class="catalog-tools"><div class="search-wrap">⌕ <input id="search" placeholder="Mahsulot qidirish..."></div><div class="filter-pills" id="filters"><button class="active" data-filter="Barchasi">Barchasi</button><button data-filter="Romlar">Romlar</button><button data-filter="Eshiklar">Eshiklar</button><button data-filter="Fasad">Fasad</button><button data-filter="Maxsus">Maxsus</button></div></div><div class="product-grid" id="productGrid"></div></section>
+<section class="about-section" id="about"><div class="about-image"></div><div class="about-copy"><div class="eyebrow">BIZ HAQIMIZDA</div><h2>Fazoga mos dizayn.<br><em>Ishonchli tanlov.</em></h2><p>Biz mijozlarga zamonaviy AKFA turidagi rom, eshik va fasad mahsulotlarini tanlash hamda buyurtma berishda qulay xizmat taqdim etamiz. Mutaxassislarimiz o‘lchov, maslahat va yetkazib berish jarayonida yordam beradi.</p><div class="about-points"><div><b>01</b><span>Tanlov va maslahat</span></div><div><b>02</b><span>O‘lchov va kelishuv</span></div><div><b>03</b><span>Yetkazish va o‘rnatish</span></div></div></div></section>
+<section class="order-section" id="order"><div class="section-head"><div><div class="eyebrow">BIR NECHA QADAMDA</div><h2>Buyurtma <em>qoldiring</em></h2></div><p>Ma’lumotlaringizni kiriting. Manzilingizni xaritadan belgilashingiz mumkin.</p></div>
+<div class="order-layout"><form id="orderForm" class="order-form"><div class="form-title"><span>01</span><div><b>Mijoz ma’lumotlari</b><small>Biz siz bilan bog‘lanishimiz uchun</small></div></div>
+<div class="field-row"><label>Ism familiya<input id="customerName" required placeholder="Masalan, Ali Valiyev"></label><label>Telefon raqam<input id="phone" required type="tel" placeholder="+998 90 123 45 67"></label></div>
+<div class="field-row"><label>Viloyat<select id="region" required><option value="">Viloyatni tanlang</option></select></label><label>Tuman / shahar<select id="district" required disabled><option value="">Avval viloyatni tanlang</option></select></label></div>
+<label>To‘liq manzil<input id="address" required placeholder="Ko‘cha, uy, mo‘ljal"></label>
+<div class="form-title second"><span>02</span><div><b>Tanlangan mahsulot</b><small>Mahsulot va rangni tasdiqlang</small></div></div>
+<div class="selected-product" id="selectedProduct"><div class="empty-product">Katalogdan mahsulot tanlang</div></div>
+<label>Qo‘shimcha izoh<textarea id="notes" rows="3" placeholder="O‘lcham, miqdor yoki boshqa talablar..."></textarea></label>
+<div class="form-title second"><span>03</span><div><b>Yetkazib berish manzili</b><small>Xaritada joylashuvni belgilang</small></div></div>
+<div class="map-hint">Xaritani bosib manzilingizni belgilang. Belgini sudrab ham joyini o‘zgartirishingiz mumkin.</div><div id="map"></div><div class="coords" id="coords">Joylashuv tanlanmagan</div>
+<button class="btn btn-primary submit-btn" type="submit">Buyurtmani yuborish <span>↗</span></button><p class="privacy-note">Buyurtma yuborish orqali ma’lumotlaringiz bilan bog‘lanishimizga rozilik bildirasiz.</p></form>
+<aside class="order-aside"><div class="aside-top"><div class="eyebrow">SIZ UCHUN QULAY</div><h3>Buyurtma jarayoni qanday ishlaydi?</h3><div class="step"><span>1</span><div><b>Mahsulotni tanlang</b><small>35 tur va 5 rangdan o‘zingizga mosini belgilang.</small></div></div><div class="step"><span>2</span><div><b>Ma’lumot qoldiring</b><small>Telefon va manzilingiz orqali siz bilan bog‘lanamiz.</small></div></div><div class="step"><span>3</span><div><b>Buyurtmani kuzating</b><small>Buyurtma raqami orqali holatni tekshiring.</small></div></div></div><div class="aside-bottom"><span>MASLAHAT KERAKMI?</span><b>Biz sizga yordam beramiz.</b><small>So‘rovingiz qabul qilingach, operator aloqaga chiqadi.</small></div></aside></div></section>
+</main>
+<footer><a class="brand" href="#"><span class="brand-mark">A</span><span>AKFA<span class="brand-sub"> PREMIUM SYSTEMS</span></span></a><span>© 2026 AKFA Premium. Barcha huquqlar himoyalangan.</span><a href="#order">Buyurtma qoldirish ↑</a></footer>
+<div class="modal-backdrop" id="productModal"><div class="modal"><button class="close" data-close="productModal">×</button><div id="modalContent"></div></div></div>
+<div class="modal-backdrop" id="trackModal"><div class="modal track-modal"><button class="close" data-close="trackModal">×</button><div class="eyebrow">BUYURTMANI KUZATISH</div><h2>Buyurtma holati</h2><p>Buyurtma raqamingizni kiriting.</p><div class="track-row"><input id="trackId" placeholder="Masalan: AKF-123456"><button class="btn btn-primary" id="trackBtn">Tekshirish</button></div><div id="trackResult"></div></div></div>
+<div class="toast" id="toast"></div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script><script src="app.js"></script>
+</body></html>

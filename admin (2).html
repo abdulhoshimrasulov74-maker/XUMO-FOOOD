@@ -1,0 +1,47 @@
+let products = [
+["Panorama 60","Romlar"],["Panorama 70","Romlar"],["Panorama 80","Romlar"],["Classic 58","Romlar"],["Classic 60","Romlar"],["Classic 70","Romlar"],["Eco 60","Romlar"],["Eco 70","Romlar"],["Comfort 60","Romlar"],["Comfort 70","Romlar"],["Lux 70","Romlar"],["Lux 80","Romlar"],
+["Kirish eshigi","Eshiklar"],["Balkon eshigi","Eshiklar"],["Oshxona eshigi","Eshiklar"],["Surilma eshik","Eshiklar"],["Fransuz eshigi","Eshiklar"],["Ikki tabaqali eshik","Eshiklar"],["Ofis eshigi","Eshiklar"],["Vitrina eshigi","Eshiklar"],
+["Fasad 50","Fasad"],["Fasad 60","Fasad"],["Fasad 70","Fasad"],["Panorama fasad","Fasad"],["Vitraj fasad","Fasad"],["Shisha fasad","Fasad"],
+["Arka rom","Maxsus"],["Uchburchak rom","Maxsus"],["Doira rom","Maxsus"],["Burchakli rom","Maxsus"],["Shovqin izolyatsiyali rom","Maxsus"],["Issiqlik saqlovchi rom","Maxsus"],["Energiya tejamkor rom","Maxsus"],["Maxsus o‘lcham rom","Maxsus"],["Premium dizayn rom","Maxsus"]
+];
+try { const extra = JSON.parse(localStorage.getItem("akfa_products") || "[]"); extra.forEach(p => products.push([p.name, p.category, p.image || ""])); } catch(e) {}
+const colors=[{name:"Oq",hex:"#f4f3ef"},{name:"Qora",hex:"#24282c"},{name:"Antrasit",hex:"#62696d"},{name:"Oltin eman",hex:"#b78a55"},{name:"Yong‘oq",hex:"#76533d"}];
+const pics=[
+"photo-1600607687939-ce8a6c25118c","photo-1600607687920-4e2a09cf159d","photo-1600210492486-724fe5c67fb0","photo-1600566753086-00f18fb6b3ea","photo-1600607687644-c7171b42498f","photo-1600566753190-17f0baa2a6c3","photo-1600607687920-4e2a09cf159d"
+];
+let selected=null, selectedColor=colors[0], activeFilter="Barchasi", map=null, marker=null, coordinates=null;
+const $=id=>document.getElementById(id);
+function imageFor(i){const custom=products[i]&&products[i][2];return custom||`https://images.unsplash.com/${pics[i%pics.length]}?auto=format&fit=crop&w=700&q=80`}
+function renderProducts(){const q=$("search").value.toLowerCase();$("productGrid").innerHTML=products.map((p,i)=>({p,i})).filter(({p})=>(activeFilter==="Barchasi"||p[1]===activeFilter)&&p[0].toLowerCase().includes(q)).map(({p,i})=>`<article class="product-card" data-index="${i}"><div class="product-image"><img loading="lazy" src="${imageFor(i)}" alt="${p[0]}"><span class="product-tag">${p[1].toUpperCase()}</span></div><div class="product-info"><small>AKFA COLLECTION / ${(i+1).toString().padStart(2,"0")}</small><h3>${p[0]}</h3><div class="product-foot"><b>5 xil rang mavjud</b><span>↗</span></div></div></article>`).join("");document.querySelectorAll(".product-card").forEach(c=>c.onclick=()=>openProduct(+c.dataset.index))}
+function openProduct(i){selected=i;selectedColor=colors[0];const p=products[i];$("modalContent").innerHTML=`<img class="modal-product-img" src="${imageFor(i)}"><div class="eyebrow">${p[1]} / AKFA COLLECTION</div><h2>${p[0]}</h2><p>Uyingiz va loyihangiz uchun zamonaviy ko‘rinishdagi ${p[0].toLowerCase()}. Rangni tanlang va buyurtma formasiga qo‘shing.</p><b style="font-size:11px">Rangni tanlang</b><div class="color-list">${colors.map((c,j)=>`<button title="${c.name}" class="color-choice ${j===0?"selected":""}" style="background:${c.hex}" data-color="${j}"></button>`).join("")}</div><div class="modal-actions"><small id="colorName" style="color:#78838b">Tanlangan rang: Oq</small><button class="btn btn-primary" id="chooseProduct">Tanlash <span>↗</span></button></div>`;$("productModal").classList.add("show");document.querySelectorAll(".color-choice").forEach(b=>b.onclick=()=>{selectedColor=colors[+b.dataset.color];document.querySelectorAll(".color-choice").forEach(x=>x.classList.remove("selected"));b.classList.add("selected");$("colorName").textContent="Tanlangan rang: "+selectedColor.name});$("chooseProduct").onclick=()=>{updateSelected();$("productModal").classList.remove("show");$("order").scrollIntoView({behavior:"smooth"});toast("Mahsulot buyurtma formasiga qo‘shildi")}}
+function updateSelected(){const p=products[selected];$("selectedProduct").innerHTML=`<div class="chosen"><img src="${imageFor(selected)}"><div><b>${p[0]}</b><small>${p[1]} · Rang: ${selectedColor.name}</small></div></div>`}
+const districts={
+"Andijon":["Andijon shahri","Asaka","Baliqchi","Bo‘ston","Buloqboshi","Jalaquduq","Izboskan","Marhamat","Oltinko‘l","Paxtaobod","Shahrixon","Xo‘jaobod","Qo‘rg‘ontepa"],
+"Buxoro":["Buxoro shahri","Kogon","G‘ijduvon","Jondor","Olot","Peshku","Romitan","Shofirkon","Qorako‘l","Qorovulbozor","Vobkent"],
+"Farg‘ona":["Farg‘ona shahri","Marg‘ilon","Qo‘qon","Quvasoy","Beshariq","Bog‘dod","Buvayda","Dang‘ara","Oltiariq","Rishton","Uchko‘prik","Yozyovon"],
+"Jizzax":["Jizzax shahri","Arnasoy","Baxmal","Do‘stlik","Forish","G‘allaorol","Mirzacho‘l","Paxtakor","Zafarobod","Zarbdor"],
+"Xorazm":["Urganch shahri","Xiva","Bog‘ot","Gurlan","Hazorasp","Qo‘shko‘pir","Shovot","Yangiariq","Yangibozor"],
+"Namangan":["Namangan shahri","Chortoq","Chust","Kosonsoy","Mingbuloq","Norin","Pop","To‘raqo‘rg‘on","Uychi","Uchqo‘rg‘on","Yangiqo‘rg‘on"],
+"Navoiy":["Navoiy shahri","Zarafshon","Qiziltepa","Konimex","Navbahor","Nurota","Tomdi","Uchquduq","Xatirchi"],
+"Qashqadaryo":["Qarshi shahri","Shahrisabz","G‘uzor","Dehqonobod","Kasbi","Kitob","Koson","Mirishkor","Muborak","Nishon","Chiroqchi","Yakkabog‘"],
+"Samarqand":["Samarqand shahri","Kattaqo‘rg‘on","Bulung‘ur","Ishtixon","Jomboy","Kattaqo‘rg‘on tumani","Narpay","Nurobod","Oqdaryo","Pastdarg‘om","Paxtachi","Payariq","Urgut"],
+"Sirdaryo":["Guliston shahri","Yangiyer","Shirin","Boyovut","Guliston tumani","Mirzaobod","Oqoltin","Sayxunobod","Sardoba","Sirdaryo","Xovos"],
+"Surxondaryo":["Termiz shahri","Denov","Boysun","Jarqo‘rg‘on","Qiziriq","Qumqo‘rg‘on","Muzrabot","Oltinsoy","Sariosiyo","Sherobod","Sho‘rchi"],
+"Toshkent viloyati":["Nurafshon shahri","Angren","Bekobod","Chirchiq","Olmaliq","Ohangaron","Yangiyo‘l","Zangiota","Qibray","Parkent","Bo‘stonliq","Chinoz","O‘rtachirchiq","Toshkent tumani"]
+};
+const regions=["Andijon","Buxoro","Farg‘ona","Jizzax","Xorazm","Namangan","Navoiy","Qashqadaryo","Samarqand","Sirdaryo","Surxondaryo","Toshkent viloyati"];
+regions.forEach(r=>$("region").add(new Option(r,r)));
+$("region").onchange=()=>{const d=$("district");d.innerHTML='<option value="">Tumanni tanlang</option>';(districts[$("region").value]||[]).forEach(x=>d.add(new Option(x,x)));d.disabled=!$("region").value};
+function initMap(){if(!window.L)return;map=L.map("map").setView([41.3111,69.2797],6);L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:"© OpenStreetMap"}).addTo(map);map.on("click",e=>setLocation(e.latlng));}
+function setLocation(latlng){coordinates={lat:latlng.lat,lng:latlng.lng};if(marker)marker.setLatLng(latlng);else marker=L.marker(latlng,{draggable:true}).addTo(map);marker.on("dragend",e=>{coordinates=e.target.getLatLng();showCoords()});showCoords()}
+function showCoords(){$("coords").textContent=`Tanlangan koordinata: ${coordinates.lat.toFixed(5)}, ${coordinates.lng.toFixed(5)}`}
+function toast(s){$("toast").textContent=s;$("toast").classList.add("show");setTimeout(()=>$("toast").classList.remove("show"),2600)}
+function getOrders(){try{return JSON.parse(localStorage.getItem("akfa_orders")||"[]")}catch(e){return []}}
+function saveOrders(o){localStorage.setItem("akfa_orders",JSON.stringify(o))}
+$("orderForm").onsubmit=e=>{e.preventDefault();if(selected===null){toast("Avval katalogdan mahsulot tanlang");$("products").scrollIntoView({behavior:"smooth"});return}if(!coordinates){toast("Xaritadan manzilni belgilang");return}const order={id:"AKF-"+Math.floor(100000+Math.random()*900000),name:$("customerName").value,phone:$("phone").value,region:$("region").value,district:$("district").value,address:$("address").value,product:products[selected][0],category:products[selected][1],color:selectedColor.name,notes:$("notes").value,coordinates,status:"Yangi buyurtma",created:new Date().toLocaleString("uz-UZ")};const orders=getOrders();orders.unshift(order);saveOrders(orders);$("orderForm").reset();$("district").disabled=true;$("district").innerHTML='<option>Avval viloyatni tanlang</option>';$("selectedProduct").innerHTML='<div class="empty-product">Katalogdan mahsulot tanlang</div>';selected=null;coordinates=null;if(marker){map.removeLayer(marker);marker=null}$("coords").textContent="Joylashuv tanlanmagan";alert("Buyurtmangiz qabul qilindi! Buyurtma raqami: "+order.id+"\\nBu raqamni saqlab qo‘ying.");toast("Buyurtma qabul qilindi: "+order.id)};
+document.querySelectorAll("[data-close]").forEach(b=>b.onclick=()=>$(`${b.dataset.close}`).classList.remove("show"));
+$("trackOpen").onclick=()=>$("trackModal").classList.add("show");
+$("trackBtn").onclick=()=>{const id=$("trackId").value.trim().toUpperCase(),o=getOrders().find(x=>x.id===id);$("trackResult").innerHTML=o?`<div class="status-pill">${o.status}</div><p><b>${o.product}</b> · ${o.color}<br>Hudud: ${o.region}, ${o.district}<br>Buyurtma: ${o.id}</p>`:"<p>Bu raqam bo‘yicha buyurtma topilmadi. Buyurtma raqamini tekshiring.</p>"};
+$("search").oninput=renderProducts;document.querySelectorAll("#filters button").forEach(b=>b.onclick=()=>{activeFilter=b.dataset.filter;document.querySelectorAll("#filters button").forEach(x=>x.classList.toggle("active",x===b));renderProducts()});
+$("mobileMenu").onclick=()=>document.querySelector("nav").style.display=document.querySelector("nav").style.display==="flex"?"none":"flex";
+renderProducts();initMap();
